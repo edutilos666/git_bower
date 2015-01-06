@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="index1.css" type="text/css"/>
+
+<!--C:\xampp\htdocs\WEB\Scratch Development\-->
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+$(function(){
+  
+  var button1= $("#button1"), 
+   button2= $("#button2"), 
+   fieldFName= $("#fname"), 
+   fieldLName= $("#lname"), 
+   fieldAge= $("#age"); 
+   
+   button1.on("click", function(event){
+     //alert("button1 was clicked"); 
+      var res= $.ajax({
+	    type: "post", 
+		url: "register.php",
+		data: {
+		  "fname": fieldFName.val(),
+		  "lname": fieldLName.val(), 
+		  "age" : fieldAge.val() 
+		}, 
+	
+	  
+	  });
+
+  res.done(function(msg){
+     $(document.body).append(msg); 
+  }); 	  
+  
+   res.fail(function(msg, status){
+      alert(status); 
+   }); 
+   }); 
+   
+   button2.on("click", function(event){
+     var res=  $.ajax({
+	    type:"POST", 
+		url: "fetch.php"
+	  }); 
+ 
+    res.done(function(msg){
+	   $(document.body).append(msg); 
+	}); 
+	
+	res.fail(function(error, status){
+	  alert(status); 
+	}); 
+
+ }); 
+ 
+ 
+var button3= $("#button3").first(); 
+
+button3.on("click", function(event){
+
+ var delete_option= $("#select1").first().val(), 
+ delete_value= $("#delete").val(); 
+ 
+ //alert(delete_option+" " + delete_value); 
+ 
+ var res= $.ajax({
+    type: "post", 
+	url: "delete.php" ,
+	data: {
+	 "delete_option": delete_option , 
+	 "delete_value": delete_value
+	}
+ }); 
+ 
+ res.done(msg=>{
+    $(document.body).append(msg); 
+ }); 
+ 
+ res.error((error, status)=>{
+    alert(status); 
+ }); 
+ 
+}); 
+
+}); 
+</script>
+</head>
+<body>
+
+<h3>Welcome to the submit center </h3>
+<form>
+First Name  <input type="text" id="fname"  name="fname"/><br/>
+Last Name <input type="text" id="lname" name="lname"/><br/>
+Age <input type="text" id="age" name="age"/><br/>
+<input type="button" value="register new person " id="button1"/><br/>
+<input type="button" value="fetch all persons " id="button2"/><br/>
+<input type="button" value="delete person" id="button3"/>
+ choose option <select id="select1">
+ <option value="fname">fname</option>
+ <option value="lname">lname</option>
+ <option value="age">age</option>
+ <option value="id">id</option>
+ </select>
+  delete value <input type="text" id="delete"/>
+ <br/>
+</form>
+
+</body>
+
+</html>
